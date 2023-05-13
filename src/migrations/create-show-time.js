@@ -1,39 +1,28 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Users", {
+    await queryInterface.createTable("show_time", {
+
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      email: {
-        type: Sequelize.STRING,
-      },
-      pass_word: {
-        type: Sequelize.STRING,
-      },
-      first_name: {
-        type: Sequelize.STRING,
-      },
-      last_name: {
-        type: Sequelize.STRING,
-      },
-      address: {
-        type: Sequelize.STRING,
-      },
-      phone_number: {
+      movie_id: {
         type: Sequelize.INTEGER,
       },
-      image: {
+      theater_id: {
         type: Sequelize.INTEGER,
       },
-      gender: {
-        type: Sequelize.BOOLEAN,
+      start_time: {
+        type: Sequelize.DATE,
       },
-      RoleId: {
+      end_time: {
+        type: Sequelize.DATE,
+      },
+      money: {
         type: Sequelize.STRING,
       },
 
@@ -48,6 +37,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Users");
-  }
+    await queryInterface.dropTable("show_time");
+  },
 };
