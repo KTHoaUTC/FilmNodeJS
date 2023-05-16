@@ -1,6 +1,7 @@
 import express from "express";
 import homeController from '../controllers/homeController';
 import userController from "../controllers/userController";
+import genreController from "../controllers/genreController";
 
 let router=express.Router();
 let initWebRoutes=(app)=>{
@@ -32,6 +33,22 @@ let initWebRoutes=(app)=>{
       userController.handleDeleteUser
     );
 
+
+    //the loai phim 
+     router.get(
+       "/gateway/api/v1/get-all-genres",
+       genreController.handleGetAllGenres
+     );
+
+     router.post(
+       "/gateway/api/v1/create-genre",
+       genreController.handleCreateNewGenre
+     );
+     router.put("/gateway/api/v1/edit-genre", genreController.handleEditGenre);
+     router.delete(
+       "/gateway/api/v1/delete-genre",
+       genreController.handleDeleteGenre
+     );
 
     router.get('/fff',(req,res)=>{
         return res.send('Hello eorld whifd')

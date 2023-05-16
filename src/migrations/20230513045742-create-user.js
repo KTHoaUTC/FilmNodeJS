@@ -28,7 +28,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       image: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       gender: {
         type: Sequelize.BOOLEAN,
