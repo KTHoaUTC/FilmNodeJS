@@ -9,22 +9,23 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Movies.init({
-     title: DataTypes.STRING,
-     genres_id:DataTypes.INTEGER,
-    description: DataTypes.TEXT,
-    poster_url: DataTypes.STRING,
-    trailer_url: DataTypes.STRING,
-    image_url: DataTypes.STRING,
-    release_date:DataTypes.STRING,
-   run_time: DataTypes.INTEGER,
-    director: DataTypes.STRING,
-   
-
-   
-  }, {
-    sequelize,
-    modelName: 'Movies',
-  });
+  Movies.init(
+    {
+      title: DataTypes.STRING,
+      genres_id: DataTypes.INTEGER,
+      description: DataTypes.TEXT,
+      countries: DataTypes.STRING,
+      poster_url: DataTypes.STRING,
+      trailer_url: DataTypes.STRING,
+      image_url: DataTypes.STRING,
+      release_date: DataTypes.STRING,
+      run_time: DataTypes.INTEGER,
+      director: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: "Movies",
+    }
+  );
   return Movies;
 };

@@ -2,53 +2,55 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('movies', {
-
+    await queryInterface.createTable("Movies", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
-      
-       genres_id: {
+
+      genres_id: {
         type: Sequelize.INTEGER
       },
       title: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
-         description: {
-        type: Sequelize.TEXT
+      description: {
+        type: Sequelize.TEXT,
+      },
+      countries: {
+        type: Sequelize.STRING,
       },
       poster_url: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       trailer_url: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
-     image_url: {
-        type: Sequelize.STRING
+      image_url: {
+        type: Sequelize.STRING,
       },
       release_date: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
-        run_time: {
-        type: Sequelize.INTEGER
+      run_time: {
+        type: Sequelize.INTEGER,
       },
       director: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('movies');
+    await queryInterface.dropTable('Movies');
   }
 };
