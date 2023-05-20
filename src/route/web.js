@@ -3,6 +3,9 @@ import homeController from "../controllers/homeController";
 import userController from "../controllers/userController";
 import genreController from "../controllers/genreController";
 import movieController from "../controllers/movieController";
+import theaterController from "../controllers/theaterController";
+import typeSeatController from "../controllers/typeSeatController";
+import seatController from "../controllers/seatController";
 
 let router = express.Router();
 let initWebRoutes = (app) => {
@@ -67,24 +70,47 @@ let initWebRoutes = (app) => {
 
   //Rap
 
-router.get(
-  "/gateway/api/v1/get-all-theaters",
-  movieController.handleGetAllMovies
-);
+  router.get(
+    "/gateway/api/v1/get-all-theaters",
+    theaterController.handleGetAllTheaters
+  );
 
-router.post(
-  "/gateway/api/v1/create-theater",
-  movieController.handleCreateNewMovie
-);
-router.put("/gateway/api/v1/edit-theater", movieController.handleEditMovie);
+  router.post(
+    "/gateway/api/v1/create-theater",
+    theaterController.handleCreateNewTheater
+  );
 
-router.delete(
-  "/gateway/api/v1/delete-theater",
-  movieController.handleDeleteMovie
-);
+  router.put(
+    "/gateway/api/v1/edit-theater",
+    theaterController.handleEditTheater
+  );
 
-//
+  router.delete(
+    "/gateway/api/v1/delete-theater",
+    theaterController.handleDeleteTheater
+  );
 
+  // ghe va loai ghe
+
+  //loaighe
+  router.get(
+    "/gateway/api/v1/get-all-typeseats",
+    typeSeatController.handleGetAllTypeSeats
+  );
+
+  //
+  // //ghe
+  router.get("/gateway/api/v1/get-all-seats", seatController.handleGetAllSeats);
+
+  router.post(
+    "/gateway/api/v1/create-seat",
+    seatController.handleCreateNewSeat
+  );
+
+  router.put("/gateway/api/v1/edit-seat", seatController.handleEditSeat);
+
+  router.delete("/gateway/api/v1/delete-seat", seatController.handleDeleteSeat);
+  // ///
 
   router.get("/fff", (req, res) => {
     return res.send("Hello eorld whifd");

@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Seat.init({
-      theater_id: DataTypes.INTEGER,
+      phongchieu_id: DataTypes.INTEGER,
       seat_type_id: DataTypes.INTEGER,
       row: DataTypes.INTEGER,
       status: DataTypes.BOOLEAN,

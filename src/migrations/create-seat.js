@@ -2,15 +2,14 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("seat", {
-
+    await queryInterface.createTable("Seats", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      theater_id: {
+      phongchieu_id: {
         type: Sequelize.INTEGER,
       },
       seat_type_id: {
@@ -19,7 +18,7 @@ module.exports = {
       row: {
         type: Sequelize.INTEGER,
       },
-     
+
       status: {
         type: Sequelize.BOOLEAN,
       },
@@ -35,6 +34,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("seat");
+    await queryInterface.dropTable("Seats");
   },
 };

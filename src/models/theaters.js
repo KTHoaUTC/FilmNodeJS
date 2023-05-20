@@ -16,6 +16,8 @@ module.exports = (sequelize, DataTypes) => {
   Theater.init({
     name: DataTypes.STRING,
     address: DataTypes.STRING,
+    description: DataTypes.TEXT,
+    image: DataTypes.STRING,
 
   }, {
     sequelize,

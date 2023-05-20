@@ -2,8 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("show_time", {
-
+    await queryInterface.createTable("ShowTimes", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -16,10 +15,13 @@ module.exports = {
       theater_id: {
         type: Sequelize.INTEGER,
       },
-      start_time: {
+      phongchieu_id: {
+        type: Sequelize.INTEGER,
+      },
+      ngay_chieu: {
         type: Sequelize.DATE,
       },
-      end_time: {
+      gio_chieu: {
         type: Sequelize.DATE,
       },
       money: {
@@ -37,6 +39,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("show_time");
+    await queryInterface.dropTable("ShowTimes");
   },
 };
