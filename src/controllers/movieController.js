@@ -37,9 +37,12 @@ let handleEditMovie = async (req, res) => {
   return res.status(200).json(message);
 };
 
+
+
 module.exports = {
   handleGetAllMovies: handleGetAllMovies,
   handleCreateNewMovie: handleCreateNewMovie,
   handleDeleteMovie: handleDeleteMovie,
   handleEditMovie: handleEditMovie,
 };
+

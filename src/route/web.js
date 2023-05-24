@@ -6,6 +6,10 @@ import movieController from "../controllers/movieController";
 import theaterController from "../controllers/theaterController";
 import typeSeatController from "../controllers/typeSeatController";
 import seatController from "../controllers/seatController";
+import phongchieuController from "../controllers/phongchieuController";
+import showtimeController from "../controllers/showtimeController";
+import movieService from "../services/movieService";
+// const Movie = require("../models/movies");
 
 let router = express.Router();
 let initWebRoutes = (app) => {
@@ -21,6 +25,7 @@ let initWebRoutes = (app) => {
   router.get("/edit-crud", homeController.getEditCRUD);
 
   router.post("/put-crud", homeController.putCRUD);
+
   router.get("/delete-crud", homeController.deleteCRUD);
 
   router.post("/gateway/api/v1/login", userController.handleLogin);
@@ -31,8 +36,14 @@ let initWebRoutes = (app) => {
     "/gateway/api/v1/create-user",
     userController.handleCreateNewUser
   );
+
   router.put("/gateway/api/v1/edit-user", userController.handleEditUser);
   router.delete("/gateway/api/v1/delete-user", userController.handleDeleteUser);
+
+  //dang ki user
+  router.get("/gateway/api/v1/get-all-auths", userController.handleGetAllAuths);
+
+  router.post("/gateway/api/v1/dangki", userController.handleDangKi);
 
   //the loai phim
   router.get(
@@ -111,6 +122,72 @@ let initWebRoutes = (app) => {
 
   router.delete("/gateway/api/v1/delete-seat", seatController.handleDeleteSeat);
   // ///
+
+  //phongchieu
+
+  router.get(
+    "/gateway/api/v1/get-all-phongchieus",
+    phongchieuController.handleGetAllPhongChieus
+  );
+
+  router.post(
+    "/gateway/api/v1/create-phongchieu",
+    phongchieuController.handleCreateNewPhongChieu
+  );
+
+  router.put(
+    "/gateway/api/v1/edit-phongchieu",
+    phongchieuController.handleEditPhongChieu
+  );
+
+  router.delete(
+    "/gateway/api/v1/delete-phongchieu",
+    phongchieuController.handleDeletePhongChieu
+  );
+
+  /// lich chieu
+
+  router.get(
+    "/gateway/api/v1/get-all-showtimes",
+    showtimeController.handleGetAllShowTimes
+  );
+
+  router.post(
+    "/gateway/api/v1/create-showtime",
+    showtimeController.handleCreateNewShowTime
+  );
+
+  router.put(
+    "/gateway/api/v1/edit-showtime",
+    showtimeController.handleEditShowTime
+  );
+
+  router.delete(
+    "/gateway/api/v1/delete-showtime",
+    showtimeController.handleDeleteShowTime
+  );
+
+  ///
+  //booking
+  router.get(
+    "/gateway/api/v1/get-all-bookings",
+    userController.handleAllBookings
+  );
+
+  router.post("/gateway/api/v1/booking", userController.handleBooking);
+
+  //
+  // router.get("/gateway/api/v1/search", movieService.handleSearch);
+  // router.get("/gateway/api/v1/search/:key", movieController.handleSearch);
+
+  // router.get("/gateway/api/v1/search/:title", movieController.searchMovies);
+
+  // router.get("/gateway/api/v1/searcher", async (req, resp) => {
+  //   let data = await db.Movie.find({
+  //     $or: [{ title: { $regex: req.params.key } }],
+  //   });
+  //   resp.send(data);
+  // });
 
   router.get("/fff", (req, res) => {
     return res.send("Hello eorld whifd");

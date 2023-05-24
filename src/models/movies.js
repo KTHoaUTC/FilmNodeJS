@@ -1,10 +1,7 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Movies extends Model {
- 
     static associate(models) {
       // define association here
     }
@@ -19,6 +16,8 @@ module.exports = (sequelize, DataTypes) => {
       trailer_url: DataTypes.STRING,
       image_url: DataTypes.STRING,
       release_date: DataTypes.STRING,
+      day_start: DataTypes.DATE,
+      status: DataTypes.STRING,
       run_time: DataTypes.INTEGER,
       director: DataTypes.STRING,
     },

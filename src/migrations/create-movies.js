@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -11,7 +11,7 @@ module.exports = {
       },
 
       genres_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       title: {
         type: Sequelize.STRING,
@@ -29,6 +29,12 @@ module.exports = {
         type: Sequelize.STRING,
       },
       image_url: {
+        type: Sequelize.STRING,
+      },
+      day_start: {
+        type: Sequelize.DATE,
+      },
+      status: {
         type: Sequelize.STRING,
       },
       release_date: {
@@ -51,6 +57,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Movies');
-  }
+    await queryInterface.dropTable("Movies");
+  },
 };

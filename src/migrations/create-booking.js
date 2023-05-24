@@ -2,8 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("booking", {
-
+    await queryInterface.createTable("Bookings", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -13,6 +12,9 @@ module.exports = {
       movie_id: {
         type: Sequelize.INTEGER,
       },
+      user_id: {
+        type: Sequelize.INTEGER,
+      },
       theater_id: {
         type: Sequelize.INTEGER,
       },
@@ -20,7 +22,15 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       seat_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.TEXT("long"),
+        allowNull: true,
+        get() {
+          const value = this.getDataValue("seat_id");
+          return value ? JSON.parse(value) : null;
+        },
+        set(value) {
+          this.setDataValue("seat_id", value ? JSON.stringify(value) : null);
+        },
       },
       booking_time: {
         type: Sequelize.DATE,
@@ -46,6 +56,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("booking");
+    await queryInterface.dropTable("Bookings");
   },
 };

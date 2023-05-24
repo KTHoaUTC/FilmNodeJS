@@ -1,4 +1,5 @@
 import db from "../models/index";
+const { Op } = require("sequelize");
 
 let checkTitle = (movieTitle) => {
   return new Promise(async (resolve, reject) => {
@@ -36,7 +37,30 @@ let getAllMovies = (movieId) => {
     }
   });
 };
+// const handleSearch = async (req, res) => {
+//   try {
+//     var search= req.body.search;
+//    var data= await db.Movies.find({"title": ".*" +search +".*" })
+//    if(data.length >0 ){
+//     res.status(200).send({ success: true, msg: "detail", data: data});
 
+//    }else{
+//     res.status(200).send({ success: true, msg:"not found"})
+//    }
+   
+//    // const data = await db.Movies.findAll({
+//     //   where: {
+//     //     title: {
+//     //       $regex: new RegExp(req.params.key, "i"),
+//     //     },
+//     //   },
+//     // });
+//     res.send(data);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send("Internal Server Error");
+//   }
+// };
 let createNewMovie = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -59,6 +83,8 @@ let createNewMovie = (data) => {
           release_date: data.release_date,
           run_time: data.run_time,
           director: data.director,
+          day_start: data.day_start,
+          status: data.status,
         });
         resolve({
           errCode: 0,
@@ -132,10 +158,22 @@ let updateMovie = (data) => {
     }
   });
 };
+// let searchMoviesByTitle = async (title) => {
+//   try {
+//     const movies = await db.Movies.findAll({
+//       title: { $regex: title, $options: "i" },
+//     });
+//     return movies;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
 
 module.exports = {
+  // handleSearch: handleSearch,
   getAllMovies: getAllMovies,
   createNewMovie: createNewMovie,
   deleteMovie: deleteMovie,
   updateMovie: updateMovie,
+  // searchMoviesByTitle: searchMoviesByTitle,
 };

@@ -1,7 +1,8 @@
 import db from "../models/index";
 import bcrypt from "bcryptjs";
-const jwt = require("jsonwebtoken");
+const { Op } = require("sequelize");
 
+const jwt = require("jsonwebtoken");
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -25,7 +26,7 @@ let handleUserLogin = (email, pass_word) => {
       if (isExist) {
         let user = await db.User.findOne({
           where: { email: email },
-          attributes: ["email", "id","RoleId", "pass_word"],
+          attributes: ["email", "id", "RoleId", "pass_word"],
           raw: true,
         });
         if (user) {
@@ -75,6 +76,34 @@ let checkUserEmail = (userEmail) => {
   });
 };
 
+// let getAllUsers = (userId) => {
+//   return new Promise(async (resolve, reject) => {
+//     try {
+//       let users = "";
+//       if (userId === "ALL") {
+//         users = await db.User.findAll({
+//           attributes: {
+//             exclude: ["pass_word"],
+//           },
+//         });
+//       }
+//       if (userId && userId !== "ALL") {
+//         users = await db.User.findOne({
+//           where: { id: userId },
+//           attributes: {
+//             exclude: ["pass_word"],
+//           },
+//         });
+//       }
+
+//       resolve(users);
+//     } catch (e) {
+//       reject(e);
+//     }
+//   });
+// };
+
+
 let getAllUsers = (userId) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -84,11 +113,21 @@ let getAllUsers = (userId) => {
           attributes: {
             exclude: ["pass_word"],
           },
+          where: {
+            roleId: {
+              [Op.not]: null,
+            },
+          },
         });
       }
       if (userId && userId !== "ALL") {
         users = await db.User.findOne({
-          where: { id: userId },
+          where: {
+            id: userId,
+            roleId: {
+              [Op.not]: null,
+            },
+          },
           attributes: {
             exclude: ["pass_word"],
           },
@@ -122,7 +161,7 @@ let createNewUser = (data) => {
           phone_number: data.phone_number,
           pass_word: hashPasswordFromBcrypt,
           RoleId: data.RoleId,
-          image:data.avatar,
+          image: data.avatar,
         });
         resolve({
           errCode: 0,
@@ -134,6 +173,74 @@ let createNewUser = (data) => {
     }
   });
 };
+//auth
+
+let getAllAuths = (userId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let users = "";
+      if (userId === "ALL") {
+        users = await db.User.findAll({
+          attributes: {
+            exclude: ["pass_word"],
+          },
+          where: {
+            RoleId: null,
+          },
+        });
+      }
+      if (userId && userId !== "ALL") {
+        users = await db.User.findOne({
+          where: {
+            id: userId,
+            RoleId: null,
+          },
+          attributes: {
+            exclude: ["pass_word"],
+          },
+        });
+      }
+
+      resolve(users);
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+let createNewAuth = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      //check email co ton tai hay khong
+      let check = await checkUserEmail(data.email);
+      if (check === true) {
+        resolve({
+          errCode: 1,
+          message: "Email da ton tai, vui long nhap email khac",
+        });
+      } else {
+        let hashPasswordFromBcrypt = await hasUserPassword(data.pass_word);
+        await db.User.create({
+          first_name: data.first_name,
+          last_name: data.last_name,
+          gender: data.gender === "1" ? true : false,
+          email: data.email,
+          address: data.address,
+          phone_number: data.phone_number,
+          pass_word: hashPasswordFromBcrypt,
+          image: data.avatar,
+        });
+        resolve({
+          errCode: 0,
+          message: "Ok",
+        });
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+
 let deleteUser = (userId) => {
   return new Promise(async (resolve, reject) => {
     let foundUser = await db.User.findOne({
@@ -175,7 +282,7 @@ let updateUserData = (data) => {
         user.address = data.address;
         user.gender = data.gender;
         user.image = data.image;
-        user.pass_word= data.pass_word;
+        user.pass_word = data.pass_word;
         await user.save();
         resolve({
           errCode: 0,
@@ -192,8 +299,61 @@ let updateUserData = (data) => {
     }
   });
 };
+let getAllBookings = (bookingId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let bookings = "";
+      if (bookingId === "ALL") {
+        bookings = await db.Booking.findAll({});
+      }
+      if (bookingId && bookingId !== "ALL") {
+        bookings = await db.Booking.findOne({
+          where: { id: bookingId },
+        });
+      }
 
+      resolve(bookings);
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+let createBooking = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      //check email co ton tai hay khong
+      // let check = await checkUserEmail(data.email);
+      // if (check === true) {
+      //   resolve({
+      //     errCode: 1,
+      //     message: "Email da ton tai, vui long nhap email khac",
+      //   });
+      // } else {
+      await db.Booking.create({
+        movie_id: data.movie_id,
+        user_id: data.user_id,
+        theater_id: data.theater_id,
+        show_time_id: data.show_time_id,
+        seat_id: data.seat_id,
+        booking_time: data.booking_time,
+        booking_status: data.booking_status,
+        total_price: data.total_price,
+        payment_status: data.payment_status,
+      });
+      resolve({
+        errCode: 0,
+        message: "Ok",
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
 module.exports = {
+  getAllAuths:getAllAuths,
+  createNewAuth:createNewAuth,
+  createBooking: createBooking,
+  getAllBookings: getAllBookings,
   handleUserLogin: handleUserLogin,
   checkUserEmail: checkUserEmail,
   getAllUsers: getAllUsers,
