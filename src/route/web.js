@@ -8,7 +8,9 @@ import typeSeatController from "../controllers/typeSeatController";
 import seatController from "../controllers/seatController";
 import phongchieuController from "../controllers/phongchieuController";
 import showtimeController from "../controllers/showtimeController";
-import movieService from "../services/movieService";
+import db from "../models/index";
+const { Op } = require("sequelize");
+
 // const Movie = require("../models/movies");
 
 let router = express.Router();
@@ -176,18 +178,23 @@ let initWebRoutes = (app) => {
 
   router.post("/gateway/api/v1/booking", userController.handleBooking);
 
-  //
-  // router.get("/gateway/api/v1/search", movieService.handleSearch);
-  // router.get("/gateway/api/v1/search/:key", movieController.handleSearch);
+  router.get("/gateway/api/v1/searcher", async (req, res) => {
+    try {
+      const { key } = req.query;
+      const movies = await db.Movies.findAll({
+        where: {
+          title: {
+            [Op.like]: `%${key}%`,
+          },
+        },
+      });
 
-  // router.get("/gateway/api/v1/search/:title", movieController.searchMovies);
-
-  // router.get("/gateway/api/v1/searcher", async (req, resp) => {
-  //   let data = await db.Movie.find({
-  //     $or: [{ title: { $regex: req.params.key } }],
-  //   });
-  //   resp.send(data);
-  // });
+      res.json(movies);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
 
   router.get("/fff", (req, res) => {
     return res.send("Hello eorld whifd");

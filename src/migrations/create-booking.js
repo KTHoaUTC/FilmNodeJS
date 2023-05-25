@@ -21,18 +21,33 @@ module.exports = {
       show_time_id: {
         type: Sequelize.INTEGER,
       },
-      seat_id: {
+      phongchieu_id: {
+        type: Sequelize.INTEGER,
+      },
+      selectedSeats: {
         type: Sequelize.TEXT("long"),
         allowNull: true,
         get() {
-          const value = this.getDataValue("seat_id");
+          const value = this.getDataValue("selectedSeats");
           return value ? JSON.parse(value) : null;
         },
         set(value) {
-          this.setDataValue("seat_id", value ? JSON.stringify(value) : null);
+          this.setDataValue(
+            "selectedSeats",
+            value ? JSON.stringify(value) : null
+          );
         },
       },
-      booking_time: {
+
+      // selectedSeats: DataTypes.ARRAY(DataTypes.INTEGER), // Sửa thành kiểu dữ liệu JSON
+
+      // selectedSeats: {
+      //   type: Sequelize.ARRAY(Sequelize.INTEGER),
+      // },
+      time: {
+        type: Sequelize.DATE,
+      },
+      date: {
         type: Sequelize.DATE,
       },
       booking_status: {
