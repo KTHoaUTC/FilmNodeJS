@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       booking_status: DataTypes.INTEGER,
       total_price: DataTypes.INTEGER,
       payment_status: DataTypes.BOOLEAN,
+      QRCode: DataTypes.TEXT,
     },
     {
       sequelize,

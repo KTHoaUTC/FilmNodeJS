@@ -11,7 +11,6 @@ import showtimeController from "../controllers/showtimeController";
 import db from "../models/index";
 const { Op } = require("sequelize");
 
-// const Movie = require("../models/movies");
 
 let router = express.Router();
 let initWebRoutes = (app) => {
@@ -183,9 +182,18 @@ let initWebRoutes = (app) => {
       const { key } = req.query;
       const movies = await db.Movies.findAll({
         where: {
-          title: {
-            [Op.like]: `%${key}%`,
-          },
+          [Op.or]: [
+            {
+              title: {
+                [Op.like]: `%${key}%`,
+              },
+            },
+            {
+              director: {
+                [Op.like]: `%${key}%`,
+              },
+            },
+          ],
         },
       });
 

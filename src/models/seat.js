@@ -13,16 +13,17 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Seat.init({
-      phongchieu_id: DataTypes.INTEGER,
+  Seat.init(
+    {
+      showtime_id: DataTypes.INTEGER,
       seat_type_id: DataTypes.INTEGER,
       row: DataTypes.INTEGER,
       status: DataTypes.BOOLEAN,
-
-   
-  }, {
-    sequelize,
-    modelName: 'Seat',
-  });
+    },
+    {
+      sequelize,
+      modelName: "Seat",
+    }
+  );
   return Seat;
 };

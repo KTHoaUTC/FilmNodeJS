@@ -1,22 +1,5 @@
 import db from "../models/index";
 
-// let checkName = (genreName) => {
-//   return new Promise(async (resolve, reject) => {
-//     try {
-//       let genre = await db.Seat.findOne({
-//         where: { name: genreName },
-//       });
-//       if (genre) {
-//         resolve(true);
-//       } else {
-//         resolve(false);
-//       }
-//     } catch (e) {
-//       reject(e);
-//     }
-//   });
-// };
-
 let getAllSeats = (seatId) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -37,43 +20,44 @@ let getAllSeats = (seatId) => {
   });
 };
 
+
 let createNewSeat = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
-      //   check name co ton tai hay khong
-      //   let check = await checkName(data.name);
-      //   if (check === true) {
-      //     resolve({
-      //       errCode: 1,
-      //       message: "The da ton tai, vui long nhap the loai khac",
-      //     });
-      //   } else {
-      //     await db.Seat.create({
-      //       phongchieu_id: data.phongchieu_id,
-      //       seat_type_id: data.seat_type_id,
-      //       row: data.row,
-      //       status: data.status,
-      //     });
-      //     resolve({
-      //       errCode: 0,
-      //       message: "Ok",
-      //     });
-      //   }
-      await db.Seat.create({
-        phongchieu_id: data.phongchieu_id,
-        seat_type_id: data.seat_type_id,
-        row: data.row,
-        status: data.status,
+      const { showtime_id, row } = data;
+
+      // Kiểm tra trạng thái của ghế
+      const seat = await db.Seat.findOne({
+        where: { showtime_id, row },
       });
-      resolve({
-        errCode: 0,
-        message: "Ok",
-      });
-    } catch (e) {
-      reject(e);
+
+      if (seat && seat.status === 0) {
+        // Ghế đã bán
+        resolve({
+          errCode: 1,
+          message: "Ghế đã được bán. Không thể thêm vào cơ sở dữ liệu.",
+        });
+      } else {
+        // Ghế chưa bán, thêm vào cơ sở dữ liệu
+        const newSeat = await db.Seat.create({
+          showtime_id,
+          row,
+          status: data.status,
+        });
+
+        resolve({
+          errCode: 0,
+          message: "Ghế đã được tạo thành công.",
+          seat: newSeat.id,
+        });
+      }
+    } catch (error) {
+      console.error("Lỗi khi tạo ghế mới:", error);
+      reject({ errCode: 500, message: "Lỗi khi tạo ghế mới." });
     }
   });
 };
+
 let deleteSeat = (seatId) => {
   return new Promise(async (resolve, reject) => {
     let foundSeat = await db.Seat.findOne({

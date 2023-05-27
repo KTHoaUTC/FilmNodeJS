@@ -21,6 +21,7 @@ module.exports = {
       show_time_id: {
         type: Sequelize.INTEGER,
       },
+
       phongchieu_id: {
         type: Sequelize.INTEGER,
       },
@@ -59,7 +60,9 @@ module.exports = {
       payment_status: {
         type: Sequelize.BOOLEAN,
       },
-
+      QRCode: {
+        type: Sequelize.TEXT,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
