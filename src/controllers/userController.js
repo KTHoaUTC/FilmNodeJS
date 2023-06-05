@@ -124,8 +124,14 @@ let handleBooking = async (req, res) => {
   let message = await userService.createBooking(req.body);
   return res.status(200).json(message);
 };
+let handleEditBooking = async (req, res) => {
+  let data = req.body;
+  let message = await userService.updateBooking(data);
+  return res.status(200).json(message);
+};
 
 module.exports = {
+  handleEditBooking:handleEditBooking,
   handleGetAllAuths: handleGetAllAuths,
   handleDangKi: handleDangKi,
   handleAllBookings: handleAllBookings,

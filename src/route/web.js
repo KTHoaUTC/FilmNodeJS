@@ -8,9 +8,11 @@ import typeSeatController from "../controllers/typeSeatController";
 import seatController from "../controllers/seatController";
 import phongchieuController from "../controllers/phongchieuController";
 import showtimeController from "../controllers/showtimeController";
+import cmtController from "../controllers/cmtController";
+import ticketController from "../controllers/ticketController";
+
 import db from "../models/index";
 const { Op } = require("sequelize");
-
 
 let router = express.Router();
 let initWebRoutes = (app) => {
@@ -73,6 +75,7 @@ let initWebRoutes = (app) => {
     movieController.handleCreateNewMovie
   );
   router.put("/gateway/api/v1/edit-movie", movieController.handleEditMovie);
+  router.put("/gateway/api/v1/edit-image", movieController.handleEditImage);
 
   router.delete(
     "/gateway/api/v1/delete-movie",
@@ -176,6 +179,26 @@ let initWebRoutes = (app) => {
   );
 
   router.post("/gateway/api/v1/booking", userController.handleBooking);
+  router.put("/gateway/api/v1/edit-booking", userController.handleEditBooking);
+
+  //history
+
+  router.get("/gateway/api/v1/bookings/:user_id", async (req, res) => {
+    const { user_id } = req.params;
+
+    try {
+      const bookings = await db.Booking.findAll({
+        where: { user_id: Number(user_id) },
+      });
+
+      res.json(bookings);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  //search
 
   router.get("/gateway/api/v1/searcher", async (req, res) => {
     try {
@@ -203,6 +226,43 @@ let initWebRoutes = (app) => {
       res.status(500).json({ error: "Internal server error" });
     }
   });
+
+  //comment
+
+  //ticket
+  router.get(
+    "/gateway/api/v1/get-all-tickets",
+    ticketController.handleAllTickets
+  );
+  router.post("/gateway/api/v1/add-ticket", ticketController.handleAddTicket);
+
+  //booking
+  router.get(
+    "/gateway/api/v1/get-all-comments",
+    cmtController.handleAllComments
+  );
+
+  router.get("/gateway/api/v1/comment/:movie_id", async (req, res) => {
+    const { movie_id } = req.params;
+
+    try {
+      const comments = await db.Comment.findAll({
+        where: { movie_id: Number(movie_id) },
+      });
+
+      res.json(comments);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  router.post("/gateway/api/v1/add-comment", cmtController.handleAddComment);
+  router.put("/gateway/api/v1/edit-comment", cmtController.handleEditComment);
+  router.delete(
+    "/gateway/api/v1/delete-comment",
+    cmtController.handleDeleteComment
+  );
 
   router.get("/fff", (req, res) => {
     return res.send("Hello eorld whifd");

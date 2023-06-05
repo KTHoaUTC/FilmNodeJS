@@ -35,7 +35,6 @@ let handleUserLogin = (email, pass_word) => {
           if (check) {
             userData.errCode = 0;
             userData.errMessage = "Đăng nhập thành công";
-
             delete user.pass_word;
             userData.user = user;
           } else {
@@ -46,8 +45,6 @@ let handleUserLogin = (email, pass_word) => {
           userData.errCode = 2;
           userData.errMessage = "Người dùng không tồn tại!";
         }
-        //ton tai ng dung
-        //   resolve()
       } else {
         userData.errCode = 1;
         userData.errMessage = "Email không tồn tại. Vui lòng nhập lại!";
@@ -75,34 +72,6 @@ let checkUserEmail = (userEmail) => {
     }
   });
 };
-
-// let getAllUsers = (userId) => {
-//   return new Promise(async (resolve, reject) => {
-//     try {
-//       let users = "";
-//       if (userId === "ALL") {
-//         users = await db.User.findAll({
-//           attributes: {
-//             exclude: ["pass_word"],
-//           },
-//         });
-//       }
-//       if (userId && userId !== "ALL") {
-//         users = await db.User.findOne({
-//           where: { id: userId },
-//           attributes: {
-//             exclude: ["pass_word"],
-//           },
-//         });
-//       }
-
-//       resolve(users);
-//     } catch (e) {
-//       reject(e);
-//     }
-//   });
-// };
-
 
 let getAllUsers = (userId) => {
   return new Promise(async (resolve, reject) => {
@@ -143,7 +112,6 @@ let getAllUsers = (userId) => {
 let createNewUser = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
-      //check email co ton tai hay khong
       let check = await checkUserEmail(data.email);
       if (check === true) {
         resolve({
@@ -161,7 +129,7 @@ let createNewUser = (data) => {
           phone_number: data.phone_number,
           pass_word: hashPasswordFromBcrypt,
           RoleId: data.RoleId,
-          image: data.avatar,
+          image: data.image,
         });
         resolve({
           errCode: 0,
@@ -321,21 +289,15 @@ let getAllBookings = (bookingId) => {
 let createBooking = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
-      //check email co ton tai hay khong
-      // let check = await checkUserEmail(data.email);
-      // if (check === true) {
-      //   resolve({
-      //     errCode: 1,
-      //     message: "Email da ton tai, vui long nhap email khac",
-      //   });
-      // } else {
-      await db.Booking.create({
+      const createdBooking = await db.Booking.create({
         movie_id: data.movie_id,
         user_id: data.user_id,
         theater_id: data.theater_id,
         show_time_id: data.show_time_id,
         seat_id: data.seat_id,
-        booking_time: data.booking_time,
+        // time: data.time,
+        // date: data.date,
+        // booking_time: data.booking_time,
         booking_status: data.booking_status,
         total_price: data.total_price,
         payment_status: data.payment_status,
@@ -343,13 +305,49 @@ let createBooking = (data) => {
       resolve({
         errCode: 0,
         message: "Ok",
+        bookings: {
+          id: createdBooking.id, // Include the ID of the created booking in the response
+        },
       });
     } catch (e) {
       reject(e);
     }
   });
 };
+let updateBooking = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!data.id) {
+        resolve({
+          errCode: 2,
+          errMessage: "loi chua truyen id",
+        });
+      }
+      let booking = await db.Booking.findOne({
+        where: { id: data.id },
+        raw: false,
+      });
+      if (booking) {
+        booking.QRCode = data.QRCode;
+
+        await booking.save();
+        resolve({
+          errCode: 0,
+          message: "Update QR thanh cong!",
+        });
+      } else {
+        resolve({
+          errCode: 1,
+          errMessage: "nguoi dung khong duoc tim thay!",
+        });
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
 module.exports = {
+  updateBooking:updateBooking,
   getAllAuths:getAllAuths,
   createNewAuth:createNewAuth,
   createBooking: createBooking,

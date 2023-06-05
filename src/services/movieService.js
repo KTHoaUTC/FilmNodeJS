@@ -37,34 +37,10 @@ let getAllMovies = (movieId) => {
     }
   });
 };
-// const handleSearch = async (req, res) => {
-//   try {
-//     var search= req.body.search;
-//    var data= await db.Movies.find({"title": ".*" +search +".*" })
-//    if(data.length >0 ){
-//     res.status(200).send({ success: true, msg: "detail", data: data});
 
-//    }else{
-//     res.status(200).send({ success: true, msg:"not found"})
-//    }
-   
-//    // const data = await db.Movies.findAll({
-//     //   where: {
-//     //     title: {
-//     //       $regex: new RegExp(req.params.key, "i"),
-//     //     },
-//     //   },
-//     // });
-//     res.send(data);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send("Internal Server Error");
-//   }
-// };
 let createNewMovie = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
-      //check name co ton tai hay khong
       let check = await checkTitle(data.title);
       if (check === true) {
         resolve({
@@ -135,9 +111,9 @@ let updateMovie = (data) => {
         movie.genres_id = data.genres_id;
         movie.description = data.description;
         movie.countries = data.countries;
-        movie.poster_url = data.poster_url;
-        movie.trailer_url = data.trailer_url;
-        movie.image_url = data.image_url;
+        // movie.poster_url = data.poster_url;
+        // movie.trailer_url = data.trailer_url;
+        // movie.image_url = data.image_url;
         movie.release_date = data.release_date;
         movie.run_time = data.run_time;
         movie.director = data.director;
@@ -158,22 +134,44 @@ let updateMovie = (data) => {
     }
   });
 };
-// let searchMoviesByTitle = async (title) => {
-//   try {
-//     const movies = await db.Movies.findAll({
-//       title: { $regex: title, $options: "i" },
-//     });
-//     return movies;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
+let updateImage = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!data.id) {
+        resolve({
+          errCode: 2,
+          errMessage: "loi chua gggtruyen id",
+        });
+      }
+      let movie = await db.Movies.findOne({
+        where: { id: data.id },
+        raw: false,
+      });
+      if (movie) {
+        movie.poster_url = data.poster_url;
+        movie.trailer_url = data.trailer_url;
+        movie.image_url = data.image_url;
 
+        await movie.save();
+        resolve({
+          errCode: 0,
+          message: "Update movie thanh cong!",
+        });
+      } else {
+        resolve({
+          errCode: 1,
+          errMessage: "Phim khong duoc tim thay!",
+        });
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
 module.exports = {
-  // handleSearch: handleSearch,
   getAllMovies: getAllMovies,
   createNewMovie: createNewMovie,
   deleteMovie: deleteMovie,
   updateMovie: updateMovie,
-  // searchMoviesByTitle: searchMoviesByTitle,
+  updateImage: updateImage,
 };

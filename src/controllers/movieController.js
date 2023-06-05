@@ -36,6 +36,11 @@ let handleEditMovie = async (req, res) => {
   let message = await movieService.updateMovie(data);
   return res.status(200).json(message);
 };
+let handleEditImage = async (req, res) => {
+  let data = req.body;
+  let message = await movieService.updateImage(data);
+  return res.status(200).json(message);
+};
 
 
 
@@ -44,5 +49,6 @@ module.exports = {
   handleCreateNewMovie: handleCreateNewMovie,
   handleDeleteMovie: handleDeleteMovie,
   handleEditMovie: handleEditMovie,
+  handleEditImage: handleEditImage,
 };
 
