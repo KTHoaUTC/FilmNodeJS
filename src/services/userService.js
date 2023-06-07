@@ -295,13 +295,11 @@ let createBooking = (data) => {
         theater_id: data.theater_id,
         show_time_id: data.show_time_id,
         seat_id: data.seat_id,
-        // time: data.time,
-        // date: data.date,
-        // booking_time: data.booking_time,
         booking_status: data.booking_status,
         total_price: data.total_price,
         payment_status: data.payment_status,
       });
+      
       resolve({
         errCode: 0,
         message: "Ok",
