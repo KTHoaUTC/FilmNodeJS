@@ -226,6 +226,24 @@ let initWebRoutes = (app) => {
       res.status(500).json({ error: "Internal server error" });
     }
   });
+  //searchShowTime
+  router.get("/gateway/api/v1/searcherDate", async (req, res) => {
+    try {
+      const { key, startDate, endDate } = req.query;
+      const showtimes = await db.ShowTime.findAll({
+        where: {
+          ngay_chieu: {
+            [Op.between]: [new Date(startDate), new Date(endDate)],
+          },
+        },
+      });
+
+      res.json(showtimes);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
 
   //comment
 

@@ -123,7 +123,7 @@ let createNewUser = (data) => {
         await db.User.create({
           first_name: data.first_name,
           last_name: data.last_name,
-          gender: data.gender === "1" ? true : false,
+          gender: data.gender === "1" ? true : 0,
           email: data.email,
           address: data.address,
           phone_number: data.phone_number,
@@ -190,7 +190,7 @@ let createNewAuth = (data) => {
         await db.User.create({
           first_name: data.first_name,
           last_name: data.last_name,
-          gender: data.gender === "1" ? true : false,
+          gender: data.gender === "1" ? true : 0,
           email: data.email,
           address: data.address,
           phone_number: data.phone_number,
