@@ -10,12 +10,18 @@ import phongchieuController from "../controllers/phongchieuController";
 import showtimeController from "../controllers/showtimeController";
 import cmtController from "../controllers/cmtController";
 import ticketController from "../controllers/ticketController";
+import paymentController  from "../controllers/paymentController";
 
 import db from "../models/index";
 const { Op } = require("sequelize");
 
 let router = express.Router();
 let initWebRoutes = (app) => {
+  router.post(
+    "/gateway/api/v1/create-payment",
+    paymentController.createPayment
+  );
+
   router.get("/", homeController.getHomePage);
   router.get("/about", homeController.getAboutPage);
 
